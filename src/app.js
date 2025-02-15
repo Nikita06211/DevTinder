@@ -1,24 +1,31 @@
 const express = require('express');
-
+const connectDB = require('./config/database');
 const app = express();
+const User = require('./models/user');
 
-// this will only handle GET api calls
-app.get("/user",(req,res)=>{
-    res.send({firstName :"sneha", lastName:"mishra"});
+app.use(express.json());
+
+app.post("/signup",async (req,res)=>{
+
+    //creating a new instance of the User model 
+    const user = new User(req.body);
+
+    try{
+        await user.save();
+        res.send("User Added");
+    }
+    catch (err){
+        res.status(400).send("Error saving the user: "+ err.message);
+    }
 });
 
-app.post("/user",(req,res)=>{
-    console.log("save data");
-    res.send("data saved");
-});
-
-
-
-// this will match all the http method api calls to "/"
-app.use("/",(req,res)=>{
-    res.send("Hello from the server");
+connectDB().then(()=>{
+    console.log("DB connection established");
+    app.listen(3001, ()=>{
+        console.log("successfully listening on port 3001");
+    });
 })
-
-app.listen(3001, ()=>{
-    console.log("successfully listening on port 3001");
+.catch(err=>{
+    console.error("DB cannot be connected");
 });
+
