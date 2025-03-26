@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", process.env.CLIENT_URI],
     credentials: true,
 }));
 app.use(express.json());
@@ -24,7 +24,7 @@ app.use("/",userRouter);
 
 connectDB().then(()=>{
     console.log("DB connection established");
-    app.listen(process.env.PORT, ()=>{
+    app.listen(process.env.PORT || 3001, ()=>{
         console.log(`successfully listening on port ${process.env.PORT}`);
     });
 })
