@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 app.use(cors({
-    origin: ["http://localhost:5173", process.env.CLIENT_URI],
+    origin: ["https://dev-tinder-web-pink.vercel.app/","https://dev-tinder-web-pink.vercel.app" ,"http://localhost:5173", process.env.CLIENT_URI],
     credentials: true,
 }));
 app.use(express.json());
