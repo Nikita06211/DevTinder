@@ -55,9 +55,13 @@ authRouter.post("/login",async(req,res)=>{
             const token = await user.getJWT();
             
             // add token to cookie and send the res back to user
-            res.cookie("token",token, {
-                expires: new Date(Date.now()+ 8*3600000),
-            });
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,           // Required for HTTPS
+                sameSite: "None",       // Required for cross-site cookies
+                expires: new Date(Date.now() + 8 * 3600000),
+              });
+              
             res.send(user);
         }
         else{
